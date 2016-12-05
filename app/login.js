@@ -2,6 +2,8 @@
 
 import React, {Component} from 'react';
 import {StyleSheet, Text, Image, View, TextInput, TouchableOpacity, TouchableHighlight} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import UserLogic from './logic/UserLogic';
 
 export default class login extends Component {
     constructor(props) {
@@ -12,14 +14,36 @@ export default class login extends Component {
         }
     }
 
+    validToken = () => {
+        if(!this.state.token){
+            return alert('token 不能为空')
+        }
+        this.setState({
+           disable: true
+        });
+
+        UserLogic.doValidToken(this.state.token)
+            .catch((error) => {
+                alert(error);
+            })
+            .then((res) => {
+                alert(JSON.stringify(res));
+            })
+            .then(()=>{
+                this.setState({
+                   disable: false
+                });
+            })
+    };
+
+
     render() {
         return (
             <View style={{flex:1,justifyContent:'center'}}>
-                <View style={{flexDirection:'row',backgroundColor:'#80bd01',marginTop:20,height:50}}>
+                <View style={{height:20,backgroundColor:'#80bd01'}}></View>
+                <View style={{flexDirection:'row',backgroundColor:'#80bd01',height:50}}>
                     <View style={{width:50,alignItems:'center',justifyContent:'center'}}>
-                        <Text style={{color:'white',fontSize:12}}>
-                            返回
-                        </Text>
+                        <Icon name="angle-left" size={24} color="#fff" />
                     </View>
                     <View style={{flex: 1,justifyContent:'center'}}>
                         <Text style={{color:'white',fontSize:16,textAlign:'center'}}>登录</Text>
@@ -43,15 +67,19 @@ export default class login extends Component {
                         borderWidth :1,borderRadius:5,borderColor :'#eee',
                         paddingLeft:10,paddingRight:10,
                         }}
-                        placeholder='Access Token' value={this.state.token}/>
+                        placeholder='Access Token' value={this.state.token}
+                        onChangeText={(token)=>{this.setState({token})}}
+                    />
 
                     <View style={{marginTop:30}}>
                         <TouchableOpacity
-                            style={{height:38,borderRadius:5,
+                            style={[{height:38,borderRadius:5,
                         marginLeft:50, marginRight:50,
                         backgroundColor:'#80bd01',
                         alignItems:'center',justifyContent:'center',
-                        }}>
+                        },this.state.disable && {backgroundColor:'grey'}]}
+                            onPress={this.validToken} disable={this.state.disable}
+                        >
                             <Text style={{color:'white',fontSize:14}}>
                                 登录
                             </Text>
