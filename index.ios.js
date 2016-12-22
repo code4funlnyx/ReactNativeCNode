@@ -9,13 +9,14 @@ import {
     AppRegistry,
     Navigator
 } from 'react-native';
-import login from './app/login';
+import LoginPage from './app/page/LoginPage';
+import HomePage from './app/page/HomePage';
 
 export default class ReactNativeCNode extends Component {
     render() {
         return (
             <Navigator
-                initialRoute={{ title: '登录', component:login }}
+                initialRoute={{ title: '登录', component:HomePage }}
                 renderScene={(route, navigator) => {
                 let Component = route.component;
                 return <Component {...route.params} navigator={navigator} />

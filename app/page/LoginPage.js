@@ -3,9 +3,9 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, Image, View, TextInput, TouchableOpacity, TouchableHighlight} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import UserLogic from './logic/UserLogic';
+import UserLogic from '../logic/UserLogic';
 
-export default class login extends Component {
+export default class LoginPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
