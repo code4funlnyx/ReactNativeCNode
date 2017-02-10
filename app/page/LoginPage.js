@@ -1,7 +1,7 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {StyleSheet, Text, Image, View, TextInput, TouchableOpacity, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, Image, View, TextInput, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import UserLogic from '../logic/UserLogic';
 

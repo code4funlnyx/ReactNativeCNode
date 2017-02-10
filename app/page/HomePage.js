@@ -4,9 +4,7 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {StyleSheet, Text, Image, ListView, View, TextInput, TouchableOpacity, TouchableHighlight} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import UserLogic from '../logic/UserLogic';
+import {StyleSheet, Text, Image, ListView, View, TouchableOpacity} from 'react-native';
 import TopicLogic from '../logic/TopicLogic';
 import moment from 'moment';
 import locale_zh_cn from "moment/locale/zh-cn";
@@ -22,13 +20,7 @@ export default class HomePage extends Component {
         super(props);
         // const ds = ;
         this.state = {
-            touchState: {
-                "0": false,
-                "1": false,
-                "2": false,
-                "3": false,
-                "4": false,
-            },
+            navTab: "all",
             loading: true,
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         }
@@ -47,20 +39,7 @@ export default class HomePage extends Component {
         })
     }
 
-    touchHeadNavItem = (index) => {
-        let touchState = JSON.parse(JSON.stringify(this.state.touchState));
-        for (let key in touchState) {
-            if (!touchState[key]) {
-                touchState[key] = {}
-            }
-            touchState[key].touched = (key == index);
-        }
 
-        this.setState({
-            touchState: touchState
-        })
-
-    }
 
     topicTagView(item) {
         if (item.top) {
@@ -84,12 +63,6 @@ export default class HomePage extends Component {
                         <Text style={[styles.tagGoodText,styles.tagText]}>精华</Text>
                     </View>
                 );
-            case 'job':
-                return (
-                    <View style={[styles.tag,styles.tagJob]}>
-                        <Text style={[styles.tagJobText,styles.tagText]}>招聘</Text>
-                    </View>
-                );
             case 'share':
                 return (
                     <View style={[styles.tag,styles.tagShare]}>
@@ -100,6 +73,12 @@ export default class HomePage extends Component {
                 return (
                     <View style={[styles.tag,styles.tagAsk]}>
                         <Text style={[styles.tagAskText,styles.tagText]}>问答</Text>
+                    </View>
+                );
+            case 'job':
+                return (
+                    <View style={[styles.tag,styles.tagJob]}>
+                        <Text style={[styles.tagJobText,styles.tagText]}>招聘</Text>
                     </View>
                 );
         }
@@ -150,10 +129,21 @@ export default class HomePage extends Component {
         )
     }
 
-    renderLoadingView() {
+    loadingView() {
         return (
             <View>
-                <Text>loading，加载啊啊啊啊啊啊啊</Text>
+                <Text>loading</Text>
+            </View>
+        )
+    }
+
+    mainView(){
+        return (
+            <View style={{flex: 1, flexDirection:'row'}}>
+                <ListView
+                    dataSource={this.state.dataSource}
+                    renderRow={this.renderItem.bind(this)}
+                />
             </View>
         )
     }
@@ -163,54 +153,43 @@ export default class HomePage extends Component {
         return (
             <View style={styles.headNav}>
                 <TouchableOpacity activeOpacity={0.7}
-                                  style={[styles.headNavItem , this.state.touchState[0].touched && styles.headNavTouched]}
-                                  onPress={()=>{this.touchHeadNavItem(0)}}>
+                                  style={[styles.headNavItem , this.state.navTab=='all' && styles.headNavTouched]}
+                                  onPress={()=>{this.setState({navTab:'all'})}}>
                     <View>
-
                         <Text style={styles.headNavText}>全部</Text>
-
                     </View>
                 </TouchableOpacity>
                 <View style={styles.headNavDivider}></View>
                 <TouchableOpacity activeOpacity={0.7}
-                                  style={[styles.headNavItem , this.state.touchState[1].touched && styles.headNavTouched]}
-                                  onPress={()=>{this.touchHeadNavItem(1)}}>
+                                  style={[styles.headNavItem , this.state.navTab=="good" && styles.headNavTouched]}
+                                  onPress={()=>{this.setState({navTab:'good'})}}>
                     <View>
-
                         <Text style={styles.headNavText}>精华</Text>
-
                     </View>
                 </TouchableOpacity>
 
                 <View style={styles.headNavDivider}></View>
                 <TouchableOpacity activeOpacity={0.7}
-                                  style={[styles.headNavItem , this.state.touchState[2].touched && styles.headNavTouched]}
-                                  onPress={()=>{this.touchHeadNavItem(2)}}>
+                                  style={[styles.headNavItem , this.state.navTab=="share" && styles.headNavTouched]}
+                                  onPress={()=>{this.setState({navTab:'share'})}}>
                     <View>
-
                         <Text style={styles.headNavText}>分享</Text>
-
                     </View>
                 </TouchableOpacity>
                 <View style={styles.headNavDivider}></View>
                 <TouchableOpacity activeOpacity={0.7}
-                                  style={[styles.headNavItem , this.state.touchState[3].touched && styles.headNavTouched]}
-                                  onPress={()=>{this.touchHeadNavItem(3)}}>
+                                  style={[styles.headNavItem , this.state.navTab=="ask" && styles.headNavTouched]}
+                                  onPress={()=>{this.setState({navTab:'ask'})}}>
                     <View>
-
                         <Text style={styles.headNavText}>问答</Text>
-
                     </View>
                 </TouchableOpacity>
                 <View style={styles.headNavDivider}></View>
                 <TouchableOpacity activeOpacity={0.7}
-                                  style={[styles.headNavItem , this.state.touchState[4].touched && styles.headNavTouched]}
-                                  onPress={()=>{this.touchHeadNavItem(4)}}>
-
+                                  style={[styles.headNavItem , this.state.navTab=="job" && styles.headNavTouched]}
+                                  onPress={()=>{this.setState({navTab:'job'})}}>
                     <View>
-
                         <Text style={styles.headNavText}>招聘</Text>
-
                     </View>
                 </TouchableOpacity>
             </View>
@@ -221,20 +200,10 @@ export default class HomePage extends Component {
 
 
         return (
+
             <View style={{flex:1}}>
-
                 {this.navView()}
-
-                {this.state.loading ? this.renderLoadingView() : (
-                        <View style={{flex: 1, flexDirection:'row'}}>
-                            <ListView
-                                dataSource={this.state.dataSource}
-                                renderRow={this.renderItem.bind(this)}
-                            />
-                        </View>
-                    )}
-
-
+                {this.state.loading ? this.loadingView(): this.mainView() }
             </View>
         )
 
