@@ -8,9 +8,8 @@ import {StyleSheet, Text, Image, ListView, View, TouchableOpacity} from 'react-n
 import TopicLogic from '../logic/TopicLogic';
 import moment from 'moment';
 import locale_zh_cn from "moment/locale/zh-cn";
+import TopicPage from "./TopicPage";
 moment.locale("zh-cn", locale_zh_cn);
-
-
 
 
 export default class HomePage extends Component {
@@ -18,7 +17,6 @@ export default class HomePage extends Component {
 
     constructor(props) {
         super(props);
-        // const ds = ;
         this.state = {
             navTab: "all",
             loading: true,
@@ -38,8 +36,6 @@ export default class HomePage extends Component {
             }
         })
     }
-
-
 
     topicTagView(item) {
         if (item.top) {
@@ -84,9 +80,11 @@ export default class HomePage extends Component {
         }
     }
 
-    timeFormat(date){
+    timeFormat(date) {
         return moment(date, moment.ISO_8601).startOf('day').fromNow()
     }
+
+
 
     renderItem(rowData, sectionID, rowID, highlightRow) {
 
@@ -95,12 +93,13 @@ export default class HomePage extends Component {
                 <View style={{flex:1,flexDirection:'row'}}>
                     {this.topicTagView(rowData)}
                     <View style={styles.titleText}>
-                        <Text numberOfLines={1} ellipsizeMode="tail" >{rowData.title}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="tail">{rowData.title}</Text>
                     </View>
                 </View>
                 <View style={{flex:1,flexDirection:'row',marginTop:5}}>
                     <View style={{justifyContent:'flex-end'}}>
-                        <Image source={{uri: rowData.author.avatar_url}} style={{width:36,height:36,resizeMode: 'cover',borderRadius:18,marginRight:10,}}/>
+                        <Image source={{uri: rowData.author.avatar_url}}
+                               style={{width:36,height:36,resizeMode: 'cover',borderRadius:18,marginRight:10,}}/>
                     </View>
                     <View style={{flex:1}}>
                         <View style={{flex:1,flexDirection:'column',justifyContent:'flex-end'}}>
@@ -115,10 +114,12 @@ export default class HomePage extends Component {
                     <View style={{flex:1}}>
                         <View style={{flex:1,flexDirection:'column',justifyContent:'flex-end'}}>
                             <View>
-                                <Text style={{textAlign:'right',fontSize:12}}>{rowData.reply_count}/{rowData.visit_count}</Text>
+                                <Text
+                                    style={{textAlign:'right',fontSize:12}}>{rowData.reply_count}/{rowData.visit_count}</Text>
                             </View>
                             <View>
-                                <Text style={{textAlign:'right',fontSize:12}}>{this.timeFormat(rowData.last_reply_at)}</Text>
+                                <Text
+                                    style={{textAlign:'right',fontSize:12}}>{this.timeFormat(rowData.last_reply_at)}</Text>
                             </View>
                         </View>
                     </View>
@@ -137,7 +138,7 @@ export default class HomePage extends Component {
         )
     }
 
-    mainView(){
+    mainView() {
         return (
             <View style={{flex: 1, flexDirection:'row'}}>
                 <ListView
@@ -147,7 +148,6 @@ export default class HomePage extends Component {
             </View>
         )
     }
-
 
     navView() {
         return (
@@ -197,27 +197,25 @@ export default class HomePage extends Component {
     }
 
     render() {
-
-
         return (
-
             <View style={{flex:1}}>
                 {this.navView()}
-                {this.state.loading ? this.loadingView(): this.mainView() }
+                {this.state.loading ? this.loadingView() : this.mainView() }
             </View>
         )
-
-
     }
 }
 
-
 const styles = StyleSheet.create({
-    headNav: {flexDirection: 'row', height: 58, backgroundColor: '#80bd01', alignItems: 'center', paddingTop: 20},
+    headNav: {
+        flexDirection: 'row',
+        height: 58,
+        backgroundColor: '#80bd01',
+        alignItems: 'center',
+        paddingTop: 20
+    },
     headNavItem: {
         flex: 1,
-        // borderColor:'#fff',
-        // borderWidth:1,
         justifyContent: 'center',
         alignItems: 'center',
         height: 28,
@@ -238,17 +236,14 @@ const styles = StyleSheet.create({
     headNavTouched: {
         backgroundColor: '#5e8a01'
     },
-
-    title:{
-        flexDirection:'row',
-        flex:1,
+    title: {
+        flexDirection: 'row',
+        flex: 1,
         // alignItems: 'center',
     },
-
-    titleText:{
-        flex:1
+    titleText: {
+        flex: 1
     },
-
     tag: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -256,45 +251,37 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         paddingHorizontal: 4,
         paddingVertical: 2,
-        marginRight:5,
-        width:36
+        marginRight: 5,
+        width: 36
     },
-
-    tagText:{
-        fontSize:12
+    tagText: {
+        fontSize: 12
 
     },
-
     tagTop: {
         backgroundColor: '#80bd01',
     },
-
     tagTopText: {
         color: '#fff',
     },
-
     tagGood: {
         backgroundColor: '#80bd01',
     },
-
     tagGoodText: {
         color: '#fff',
     },
-
     tagShare: {
         backgroundColor: '#e5e5e5',
     },
     tagShareText: {
         color: '#999'
     },
-
     tagJob: {
         backgroundColor: '#e5e5e5',
     },
     tagJobText: {
         color: '#999'
     },
-
     tagAsk: {
         backgroundColor: '#e5e5e5',
     },
@@ -302,25 +289,4 @@ const styles = StyleSheet.create({
         color: '#999'
     },
 
-    flexContainer: {
-        // 容器需要添加direction才能变成让子元素flex
-        flexDirection: 'row',
-        borderColor:'#0f0',
-        flex:1
-    },
-    cell: {
-        flex: 1,
-        height: 50,
-        backgroundColor: '#aaaaaa'
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    cellfixed: {
-        height: 50,
-        width: 80,
-        backgroundColor: '#fefefe'
-    }
 })

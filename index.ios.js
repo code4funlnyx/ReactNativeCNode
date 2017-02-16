@@ -12,13 +12,14 @@ import {
 import LoginPage from './app/page/LoginPage';
 import HomePage from './app/page/HomePage';
 import RootPage from './app/page/RootPage';
+import TopicPage from './app/page/TopicPage';
 
 export default class ReactNativeCNode extends Component {
     render() {
         return (
             <Navigator
                 style={{flex:1}}
-                initialRoute={{ title: 'root', component:RootPage }}
+                initialRoute={{ title: 'topic', component:TopicPage }}
                 renderScene={(route, navigator) => {
                 let Component = route.component;
                 return <Component {...route.params} navigator={navigator} />

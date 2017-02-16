@@ -76,7 +76,7 @@ export default class RootPage extends Component {
                         onPress={() => this.setState({selectedTab: '44'})}
                         selectedTitleStyle={{color: 'blue'}}
                     >
-                        <LoginPage/>
+                        <LoginPage navigator={this.props.navigator}/>
                     </TabNavigator.Item>
                 </TabNavigator>
             </View>

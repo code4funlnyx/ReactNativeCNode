@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, Image, View, TextInput, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import UserLogic from '../logic/UserLogic';
+import HomePage from './HomePage';
 
 export default class LoginPage extends Component {
     constructor(props) {
@@ -18,22 +19,29 @@ export default class LoginPage extends Component {
         if(!this.state.token){
             return alert('token 不能为空')
         }
-        this.setState({
-           disable: true
-        });
+        // this.setState({
+        //    disable: true
+        // });
 
-        UserLogic.doValidToken(this.state.token)
-            .catch((error) => {
-                alert(error);
-            })
-            .then((res) => {
-                alert(JSON.stringify(res));
-            })
-            .then(()=>{
-                this.setState({
-                   disable: false
-                });
-            })
+        // UserLogic.doValidToken(this.state.token)
+        //     .catch((error) => {
+        //         alert(error);
+        //     })
+        //     .then((res) => {
+        //         alert(JSON.stringify(res));
+        //     })
+        //     .then(()=>{
+        //         this.setState({
+        //            disable: false
+        //         });
+        //
+        //     })
+        this.props.navigator.push({
+            component: HomePage,
+            passProps: {
+                id: '111'
+            }
+        })
     };
 
 
