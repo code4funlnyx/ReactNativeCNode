@@ -19,7 +19,7 @@ export default class ReactNativeCNode extends Component {
         return (
             <Navigator
                 style={{flex:1}}
-                initialRoute={{ title: 'topic', component:TopicPage }}
+                initialRoute={{ title: 'topic', component:RootPage }}
                 renderScene={(route, navigator) => {
                 let Component = route.component;
                 return <Component {...route.params} navigator={navigator} />

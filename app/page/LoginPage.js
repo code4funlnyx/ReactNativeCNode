@@ -50,15 +50,15 @@ export default class LoginPage extends Component {
             <View style={{flex:1,justifyContent:'center'}}>
                 <View style={{height:20,backgroundColor:'#80bd01'}}></View>
                 <View style={{flexDirection:'row',backgroundColor:'#80bd01',height:50}}>
-                    <View style={{width:50,alignItems:'center',justifyContent:'center'}}>
-                        <Icon name="angle-left" size={24} color="#fff" />
-                    </View>
+                    <TouchableOpacity onPress={()=>this.props.navigator.pop()} style={{width:50,alignItems:'center',justifyContent:'center'}}>
+                        { this.props.navigator.getCurrentRoutes().length==1?null:<Icon name="angle-left" size={24} color="#fff" />}
+                    </TouchableOpacity>
                     <View style={{flex: 1,justifyContent:'center'}}>
                         <Text style={{color:'white',fontSize:16,textAlign:'center'}}>登录</Text>
                     </View>
-                    <View style={{width:50,alignItems:'center',justifyContent:'center'}}>
+                    <TouchableOpacity style={{width:50,alignItems:'center',justifyContent:'center'}}>
 
-                    </View>
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{flex: 1,justifyContent:'center'}}>

@@ -85,10 +85,19 @@ export default class HomePage extends Component {
     }
 
 
+    go(page,id){
+        this.props.navigator.push({
+            component: TopicPage,
+            params: {
+                id: id
+            }
+        })
+    }
 
     renderItem(rowData, sectionID, rowID, highlightRow) {
 
         return (
+        <TouchableOpacity onPress={()=>this.go('Topic',rowData.id)}>
             <View style={{flex:1,flexDirection:'column' ,padding:10,borderBottomWidth:1,borderBottomColor:'#ddd'}}>
                 <View style={{flex:1,flexDirection:'row'}}>
                     {this.topicTagView(rowData)}
@@ -127,6 +136,7 @@ export default class HomePage extends Component {
                 </View>
 
             </View>
+        </TouchableOpacity>
         )
     }
 

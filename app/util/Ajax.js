@@ -5,7 +5,7 @@ let ajax = {
         console.log(params);
         if (params) {
             for (let key in params) {
-                if(params[key]) paramsArr.push(key + "=" + params[key])
+                if(params[key] != undefined) paramsArr.push(key + "=" + params[key])
             }
             if(paramsArr.length){
                 if (url.indexOf('?') == -1) {
