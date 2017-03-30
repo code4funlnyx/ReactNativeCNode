@@ -2,8 +2,9 @@ import Ajax from '../util/Ajax';
 import config from '../../config';
 
 let TopicLogic = {
-    doGetTopics: (page, tab, limit, mdrender) => {
-        return Ajax.get(`${config.host}/topics`, {page, tab, limit, mdrender})
+    doGetTopics: (prarms) => {
+        //page, tab, limit, mdrender
+        return Ajax.get(`${config.host}/topics`, prarms)
     },
     doGetTopic: (id, mdrender, accesstoken) => {
         console.log(id, mdrender, accesstoken)

@@ -4,7 +4,7 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {StyleSheet, Text, Image, ListView, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, Image, ListView, View, TouchableOpacity,RefreshControl} from 'react-native';
 import TopicLogic from '../logic/TopicLogic';
 import moment from 'moment';
 import locale_zh_cn from "moment/locale/zh-cn";
@@ -20,6 +20,7 @@ export default class HomePage extends Component {
         this.state = {
             navTab: "all",
             loading: true,
+            refreshing: false,
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         }
     }
@@ -94,6 +95,34 @@ export default class HomePage extends Component {
         })
     }
 
+    toggleTab(tab){
+        this.setState({refreshing:true,navTab:tab});
+        TopicLogic.doGetTopics({tab:tab!='all'?tab:''}).then((res) => {
+            if (res.success) {
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(res.data),
+                    refreshing: false
+                });
+            } else {
+                alert(JSON.stringify(res))
+            }
+        })
+    }
+
+    _onRefresh(){
+        this.setState({refreshing:true});
+        TopicLogic.doGetTopics({tab:this.state.navTab}).then((res) => {
+            if (res.success) {
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(res.data),
+                    refreshing:false
+                });
+            } else {
+                alert(JSON.stringify(res))
+            }
+        })
+    }
+
     renderItem(rowData, sectionID, rowID, highlightRow) {
 
         return (
@@ -148,12 +177,21 @@ export default class HomePage extends Component {
         )
     }
 
+
+
     mainView() {
         return (
             <View style={{flex: 1, flexDirection:'row'}}>
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderItem.bind(this)}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />
+                    }
+
                 />
             </View>
         )
@@ -164,7 +202,7 @@ export default class HomePage extends Component {
             <View style={styles.headNav}>
                 <TouchableOpacity activeOpacity={0.7}
                                   style={[styles.headNavItem , this.state.navTab=='all' && styles.headNavTouched]}
-                                  onPress={()=>{this.setState({navTab:'all'})}}>
+                                  onPress={()=>this.toggleTab('all')}>
                     <View>
                         <Text style={styles.headNavText}>全部</Text>
                     </View>
@@ -172,7 +210,7 @@ export default class HomePage extends Component {
                 <View style={styles.headNavDivider}></View>
                 <TouchableOpacity activeOpacity={0.7}
                                   style={[styles.headNavItem , this.state.navTab=="good" && styles.headNavTouched]}
-                                  onPress={()=>{this.setState({navTab:'good'})}}>
+                                  onPress={()=>{this.toggleTab('good')}}>
                     <View>
                         <Text style={styles.headNavText}>精华</Text>
                     </View>
@@ -181,7 +219,7 @@ export default class HomePage extends Component {
                 <View style={styles.headNavDivider}></View>
                 <TouchableOpacity activeOpacity={0.7}
                                   style={[styles.headNavItem , this.state.navTab=="share" && styles.headNavTouched]}
-                                  onPress={()=>{this.setState({navTab:'share'})}}>
+                                  onPress={()=>{this.toggleTab('share')}}>
                     <View>
                         <Text style={styles.headNavText}>分享</Text>
                     </View>
@@ -189,7 +227,7 @@ export default class HomePage extends Component {
                 <View style={styles.headNavDivider}></View>
                 <TouchableOpacity activeOpacity={0.7}
                                   style={[styles.headNavItem , this.state.navTab=="ask" && styles.headNavTouched]}
-                                  onPress={()=>{this.setState({navTab:'ask'})}}>
+                                  onPress={()=>{this.toggleTab('ask')}}>
                     <View>
                         <Text style={styles.headNavText}>问答</Text>
                     </View>
@@ -197,7 +235,7 @@ export default class HomePage extends Component {
                 <View style={styles.headNavDivider}></View>
                 <TouchableOpacity activeOpacity={0.7}
                                   style={[styles.headNavItem , this.state.navTab=="job" && styles.headNavTouched]}
-                                  onPress={()=>{this.setState({navTab:'job'})}}>
+                                  onPress={()=>{this.toggleTab('job')}}>
                     <View>
                         <Text style={styles.headNavText}>招聘</Text>
                     </View>
@@ -210,7 +248,7 @@ export default class HomePage extends Component {
         return (
             <View style={{flex:1}}>
                 {this.navView()}
-                {this.state.loading ? this.loadingView() : this.mainView() }
+                {this.mainView() }
             </View>
         )
     }
